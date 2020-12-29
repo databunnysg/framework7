@@ -122,10 +122,12 @@ class Messages extends Framework7Class {
         <div class="message-content">
           ${message.name ? `<div class="message-name">${message.name}</div>` : ''}
           ${message.header ? `<div class="message-header">${message.header}</div>` : ''}
+          ${message.video ? `<video src="${message.video}" controls style="max-width: 450px;max-height: 380px;"></video>`:''}
+          ${message.youtubevideo ? `<iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 450px;max-height: 380px;"></iframe>`:''}
+          ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
+          ${message.imageSrc && !message.image ? `<div class="message-image"><img src="${message.imageSrc}" style="max-width: 450px;max-height: 380px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
           <div class="message-bubble">
             ${message.textHeader ? `<div class="message-text-header">${message.textHeader}</div>` : ''}
-            ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
-            ${message.imageSrc && !message.image ? `<div class="message-image"><img src="${message.imageSrc}"></div>` : ''}
             ${message.text || message.isTyping ? `<div class="message-text">${message.text || ''}${message.isTyping ? '<div class="message-typing-indicator"><div></div><div></div><div></div></div>' : ''}</div>` : ''}
             ${message.textFooter ? `<div class="message-text-footer">${message.textFooter}</div>` : ''}
           </div>
