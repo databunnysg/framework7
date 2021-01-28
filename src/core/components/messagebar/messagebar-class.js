@@ -290,10 +290,18 @@ class Messagebar extends Framework7Class {
     if (messagebar.params.renderAttachment) {
       return messagebar.params.renderAttachment.call(messagebar, attachment);
     }
+    if(['.mp4','.MP4','.webm','.ogg','.OGG','WEBM'].some(r=> attachment.toString().indexOf(r) >= 0))
+    return `
+    <div class="messagebar-attachment">
+    <video src="${attachment}" style="max-width: 150px;max-height: 150px;>
+    <span class="messagebar-attachment-delete" onclick="Shiny.setInputValue('attachmentvideoremoved','${attachment}')"></span>
+  </div>
+    `;
+    if(['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG'].some(r=> attachment.toString().indexOf(r) >= 0))
     return `
       <div class="messagebar-attachment">
-        <img src="${attachment}">
-        <span class="messagebar-attachment-delete"></span>
+        <img src="${attachment}" style="max-width: 150px;max-height: 150px;>
+        <span class="messagebar-attachment-delete" onclick="Shiny.setInputValue('attachmentpictureremoved','${attachment}')"></span>
       </div>
     `;
   }

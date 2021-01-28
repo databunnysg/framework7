@@ -114,7 +114,7 @@ class Messages extends Framework7Class {
       return `<div class="messages-title">${message.text}</div>`;
     }
     const attrs = Object.keys(message.attrs).map(attr => `${attr}="${message.attrs[attr]}"`).join(' ');
-    return `
+  if(Shiny.shinyapp.$inputValues["msgfilter"]=="all")  return `
       <div class="message message-${message.type} ${message.isTyping ? 'message-typing' : ''} ${message.cssClass || ''}" ${attrs}>
         ${message.avatar ? `
         <div class="message-avatar" style="background-image:url(${message.avatar})"></div>
@@ -122,10 +122,10 @@ class Messages extends Framework7Class {
         <div class="message-content">
           ${message.name ? `<div class="message-name">${message.name}</div>` : ''}
           ${message.header ? `<div class="message-header">${message.header}</div>` : ''}
-          ${message.video ? `<video src="${message.video}" controls style="max-width: 450px;max-height: 380px;"></video>`:''}
-          ${message.youtubevideo ? `<iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 450px;max-height: 380px;"></iframe>`:''}
+          ${message.video ? `<div class="message-content" style="min-width: 340px;max-width: 340px;min-height: 180px;max-height: 480px;"><video src="${message.video}" controls></video></div>`:''}
+          ${message.youtubevideo ? `<div class='' style="min-width: 320px;min-height: 180px;"><iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="min-width: 320px;min-height: 180px;"></iframe></div>`:''}
           ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
-          ${message.imageSrc && !message.image ? `<div class="message-image"><img src="${message.imageSrc}" style="max-width: 450px;max-height: 380px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
+          ${message.imageSrc && !message.image ? `<div class="message-content"><img  src="${message.imageSrc}" style="max-width: 160px;min-height: 90px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
           <div class="message-bubble">
             ${message.textHeader ? `<div class="message-text-header">${message.textHeader}</div>` : ''}
             ${message.text || message.isTyping ? `<div class="message-text">${message.text || ''}${message.isTyping ? '<div class="message-typing-indicator"><div></div><div></div><div></div></div>' : ''}</div>` : ''}
@@ -135,6 +135,71 @@ class Messages extends Framework7Class {
         </div>
       </div>
     `;
+    if(Shiny.shinyapp.$inputValues["msgfilter"]=="chat")  return `
+    <div class="message message-${message.type} ${message.isTyping ? 'message-typing' : ''} ${message.cssClass || ''}" ${attrs} style="display:none">
+      ${message.avatar ? `
+      <div class="message-avatar" style="background-image:url(${message.avatar})"></div>
+      ` : ''}
+      <div class="message-content">
+        ${message.name ? `<div class="message-name">${message.name}</div>` : ''}
+        ${message.header ? `<div class="message-header">${message.header}</div>` : ''}
+        ${message.video ? `<div class="message-content" style="min-width: 340px;max-width: 340px;min-height: 180px;max-height: 480px;"><video src="${message.video}" controls></video></div>`:''}
+        ${message.youtubevideo ? `<div class='' style="min-width: 320px;min-height: 180px;"><iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="min-width: 320px;min-height: 180px;"></iframe></div>`:''}
+        ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
+        ${message.imageSrc && !message.image ? `<div class="message-content"><img  src="${message.imageSrc}" style="max-width: 160px;min-height: 90px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
+        <div class="message-bubble">
+          ${message.textHeader ? `<div class="message-text-header">${message.textHeader}</div>` : ''}
+          ${message.text || message.isTyping ? `<div class="message-text">${message.text || ''}${message.isTyping ? '<div class="message-typing-indicator"><div></div><div></div><div></div></div>' : ''}</div>` : ''}
+          ${message.textFooter ? `<div class="message-text-footer">${message.textFooter}</div>` : ''}
+        </div>
+        ${message.footer ? `<div class="message-footer">${message.footer}</div>` : ''}
+      </div>
+    </div>
+  `;
+
+    if(!message.youtubevideo&&Shiny.shinyapp.$inputValues["msgfilter"]=="youtube")  return `
+    <div class="message message-${message.type} ${message.isTyping ? 'message-typing' : ''} ${message.cssClass || ''}" ${attrs} style="display:none">
+      ${message.avatar ? `
+      <div class="message-avatar" style="background-image:url(${message.avatar})"></div>
+      ` : ''}
+      <div class="message-content">
+        ${message.name ? `<div class="message-name">${message.name}</div>` : ''}
+        ${message.header ? `<div class="message-header">${message.header}</div>` : ''}
+        ${message.video ? `<div class="message-content" style="min-width: 340px;max-width: 340px;min-height: 180px;max-height: 480px;"><video src="${message.video}" controls></video></div>`:''}
+        ${message.youtubevideo ? `<div class='' style="min-width: 320px;min-height: 180px;"><iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="min-width: 320px;min-height: 180px;"></iframe></div>`:''}
+        ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
+        ${message.imageSrc && !message.image ? `<div class="message-content"><img  src="${message.imageSrc}" style="max-width: 160px;min-height: 90px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
+        <div class="message-bubble">
+          ${message.textHeader ? `<div class="message-text-header">${message.textHeader}</div>` : ''}
+          ${message.text || message.isTyping ? `<div class="message-text">${message.text || ''}${message.isTyping ? '<div class="message-typing-indicator"><div></div><div></div><div></div></div>' : ''}</div>` : ''}
+          ${message.textFooter ? `<div class="message-text-footer">${message.textFooter}</div>` : ''}
+        </div>
+        ${message.footer ? `<div class="message-footer">${message.footer}</div>` : ''}
+      </div>
+    </div>
+  `;
+  if(message.youtubevideo&&Shiny.shinyapp.$inputValues["msgfilter"]=="youtube")  return `
+  <div class="message message-${message.type} ${message.isTyping ? 'message-typing' : ''} ${message.cssClass || ''}" ${attrs} >
+    ${message.avatar ? `
+    <div class="message-avatar" style="background-image:url(${message.avatar})"></div>
+    ` : ''}
+    <div class="message-content">
+      ${message.name ? `<div class="message-name">${message.name}</div>` : ''}
+      ${message.header ? `<div class="message-header">${message.header}</div>` : ''}
+      ${message.video ? `<div class="message-content" style="min-width: 340px;max-width: 340px;min-height: 180px;max-height: 480px;"><video src="${message.video}" controls></video></div>`:''}
+      ${message.youtubevideo ? `<div class='' style="min-width: 320px;min-height: 180px;"><iframe src="${message.youtubevideo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="min-width: 320px;min-height: 180px;"></iframe></div>`:''}
+      ${message.image ? `<div class="message-image">${message.image}</div>` : ''}
+      ${message.imageSrc && !message.image ? `<div class="message-content"><img  src="${message.imageSrc}" style="max-width: 160px;min-height: 90px;" onclick="if(window.photoBrowser!==undefined) window.photoBrowser.destroy();window.photoBrowser = app.photoBrowser.create({photos: [ $(this).attr('src')],theme: 'dark'}).open();"></div>` : ''}
+      <div class="message-bubble">
+        ${message.textHeader ? `<div class="message-text-header">${message.textHeader}</div>` : ''}
+        ${message.text || message.isTyping ? `<div class="message-text">${message.text || ''}${message.isTyping ? '<div class="message-typing-indicator"><div></div><div></div><div></div></div>' : ''}</div>` : ''}
+        ${message.textFooter ? `<div class="message-text-footer">${message.textFooter}</div>` : ''}
+      </div>
+      ${message.footer ? `<div class="message-footer">${message.footer}</div>` : ''}
+    </div>
+  </div>
+`;
+  
   }
 
   renderMessages(messagesToRender = this.messages, method = this.params.newMessagesFirst ? 'prepend' : 'append') {
